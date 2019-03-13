@@ -5,6 +5,9 @@ import com.hugosilva.curso.ws.domain.Role;
 import com.hugosilva.curso.ws.domain.User;
 import com.hugosilva.curso.ws.dto.UserDTO;
 import com.hugosilva.curso.ws.services.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@Api(description = "Endpoints para criar, retornar, atualizar e deletar usuários.")
 public class UserResource {
 
     @Autowired
@@ -40,7 +44,9 @@ public class UserResource {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+    @ApiOperation("Retorna um especifico usuário através do seu identificador.")
+    public ResponseEntity<UserDTO> findById(@ApiParam("Id do usuário. Não pode ser vazio")
+                                                @PathVariable String id) {
         User user = userService.findById(id);
         return ResponseEntity.ok().body(new UserDTO(user));
     }
